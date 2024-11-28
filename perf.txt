@@ -1,0 +1,347 @@
+BEFORE:
+
+(clean application state), exmpty idb
+- intervall-timeout set to zero
+2220ms
+2494ms
+2235ms
+
+// series run without cleaning the state
+2385
+4813
+6079
+7553
+9573
+
+
+AFTER:
+(clear state)
+1370
+1281
+1212
+
+(non clear)
+1312
+1314
+1362
+1448
+1450
+1397
+
+
+
+
+
+===================================
+20.06.2018
+===================================
+IndexedDB
+
+BEFORE:
+3610
+3380
+3489
+
+
+AFTER (with localstorage ping):
+4183
+3962
+3821
+
+=> sending localstorage-pings is slower
+
+
+
+
+====== build-size
+BEFORE: 37251
+AFTER: 4077
+
+
+====== build-size 2
+BEFORE: 4077
+AFTER: 3795
+
+
+====== build-size 3
+BEFORE: 3795
+AFTER: 3110
+
+
+
+-----------------------------------------
+14.July.2018: test:performance
+
+before: {
+  "openClose": 1589.1032320000231,
+  "sendRecieve": {
+    "parallel": 8576.14631400071,
+    "series": 8902.407701000571
+  }
+}
+
+
+after: {
+  "openClose": 1606.3578069992363,
+  "sendRecieve": {
+    "parallel": 6627.974293999374,
+    "series": 5202.203781999648
+  }
+}
+-----------------------------------------
+
+
+
+-----------------------------------------
+test:performance
+
+BEFORE: {
+  "openClose": 1499.9152579996735,
+  "sendRecieve": {
+    "parallel": 6752.695256000385,
+    "series": 5142.3914529997855
+  }
+}
+
+AFTER: {  // getPathsCache
+  "openClose": 1154.4196130000055,
+  "sendRecieve": {
+    "parallel": 6559.061360999942,
+    "series": 4965.728401999921
+  }
+}
+
+AFTER2: { // cleanup things
+  "openClose": 1086.149023000151,
+  "sendRecieve": {
+    "parallel": 6496.672225000337,
+    "series": 4932.777033999562
+  }
+}
+
+AFTER3: { // run things in parallel
+  "openClose": 737.8487470000982,
+  "sendRecieve": {
+    "parallel": 6637.516607999802,
+    "series": 4835.849313000217
+  }
+}
+
+AFTER4: {  // read content in parallel
+  "openClose": 746.0398439988494,
+  "sendRecieve": {
+    "parallel": 6332.704676998779,
+    "series": 4761.053835000843
+  }
+}
+
+AFTER5: { // better postMessage
+  "openClose": 666.0222460012883,
+  "sendRecieve": {
+    "parallel": 5854.225347001106,
+    "series": 4425.243154998869
+  }
+}
+
+
+
+-----------------------------------------
+test:performance
+
+BEFORE: {
+  "openClose": 714.9132689982653,
+  "sendRecieve": {
+    "parallel": 6018.035248000175,
+    "series": 4019.5094799995422
+  }
+}
+
+AFTER: { // write message up front
+  "openClose": 703.9341719998047,
+  "sendRecieve": {
+    "parallel": 233.59367400035262,
+    "series": 4531.717969999649
+  }
+}
+
+-----------------------------------------
+
+-----------------------------------------
+test:performance - forgetting set
+
+BEFORE: {
+  "openClose": 703.9341719998047,
+  "sendRecieve": {
+    "parallel": 233.59367400035262,
+    "series": 4531.717969999649
+  }
+}
+
+AFTER: { // add fast path
+  "openClose": 698.5278329998255,
+  "sendRecieve": {
+    "parallel": 254.588275000453,
+    "series": 3679.5491359978914
+  }
+}
+
+-----------------------------------------
+no idle-queue
+
+BEFORE: {
+  "openClose": 720.8237979999976,
+  "sendRecieve": {
+    "parallel": 250.95046299998648,
+    "series": 3671.9275919999927
+  }
+}
+
+AFTER: {
+  "openClose": 684.5638470000122,
+  "sendRecieve": {
+    "parallel": 246.08427699981257,
+    "series": 2251.4478739998303
+  }
+}
+
+-----------------------------------------
+
+## no default import
+npm run build:size
+BEFORE: 112358
+AFTER : 112401
+
+
+## only use async/await when needed
+BEFORE: 112401
+AFTER : 111582
+
+
+-----------------------------------------
+new unload module
+
+BEFORE: {
+  "openClose": 765.1154530011117,
+  "sendRecieve": {
+    "parallel": 259.89112799987197,
+    "series": 4052.1648419983685
+  }
+}
+
+AFTER: {
+  "openClose": 672.2327830009162,
+  "sendRecieve": {
+    "parallel": 250.701522000134,
+    "series": 4001.1675169989467
+  }
+}
+
+-----------------------------------------
+use native node-code without transpilation
+
+BEFORE: {
+  "openClose": 733.8300310000777,
+  "sendRecieve": {
+    "parallel": 245.27187200076878,
+    "series": 3865.821045000106
+  }
+}
+
+AFTER: {
+  "openClose": 577.4335329998285,
+  "sendRecieve": {
+    "parallel": 226.03592699952424,
+    "series": 4163.729206999764
+  }
+}
+
+
+-----------------------------------------
+CACHE tmp-folder:
+BEFORE: {
+  "openClose": 611.5843779994175,
+  "sendRecieve": {
+    "parallel": 229.9967109998688,
+    "series": 4040.1850410001352
+  }
+}
+{
+  "openClose": 586.3366490006447,
+  "sendRecieve": {
+    "parallel": 237.4793659998104,
+    "series": 3972.603798000142
+  }
+}
+AFTER: {
+  "openClose": 563.7609900003299,
+  "sendRecieve": {
+    "parallel": 233.5304539995268,
+    "series": 3869.6750210002065
+  }
+}
+
+-----------------------------------------
+CACHE ensure-folder exists:
+BEFORE:{
+  "openClose": 583.2204679995775,
+  "sendRecieve": {
+    "parallel": 206.64538500085473,
+    "series": 3861.489134998992
+  }
+}
+
+AFTER: {
+  "openClose": 544.0778630003333,
+  "sendRecieve": {
+    "parallel": 220.51885700039566,
+    "series": 2255.5608139988035
+  }
+}
+
+
+
+4431
+4425
+4417
+4405
+4382
+4376
+4350
+4319
+
+
+===================================
+13.11.2019
+===================================
+
+{
+  "openClose": 565.4872879981995,
+  "sendRecieve": {
+    "parallel": 181.46631100028753,
+    "series": 2321.6348760016263
+  }
+}
+
+
+
+===================================
+3.12.2021
+===================================
+
+{
+  "openClose": 1110.2557100057602,
+  "sendRecieve": {
+    "parallel": 279.0764960050583,
+    "series": 2797.712993979454
+  },
+  "leaderElection": 2122.0940190553665
+}
+
+{
+  "openClose": 885.0331689119339,
+  "sendRecieve": {
+    "parallel": 279.1763379573822,
+    "series": 2232.475461959839
+  },
+  "leaderElection": 2150.9966419935226
+}
